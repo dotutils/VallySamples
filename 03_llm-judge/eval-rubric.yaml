@@ -1,0 +1,10 @@
+name: minimal-sample
+
+defaults:
+  runs: 1
+
+stimuli:
+  - name: hello-world
+    prompt: "Say hello"
+    rubric: 
+      - "The output should contain greeting in english"

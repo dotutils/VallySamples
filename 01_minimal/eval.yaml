@@ -1,0 +1,12 @@
+name: minimal-sample
+
+defaults:
+  runs: 1
+
+stimuli:
+  - name: hello-world
+    prompt: "Say hello"
+    graders:
+      - type: output-contains
+        config:
+          substring: "hello"

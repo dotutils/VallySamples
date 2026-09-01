@@ -1,0 +1,14 @@
+name: minimal-sample
+
+defaults:
+  runs: 1
+
+stimuli:
+  - name: hello-world
+    prompt: "Say hello"
+    graders:
+      - type: prompt
+        config:
+          prompt: "The output should contain greeting in english"
+          scoring: scale_1_5
+          model: claude-sonnet-5
