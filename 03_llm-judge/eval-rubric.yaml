@@ -8,3 +8,4 @@ stimuli:
     prompt: "Say hello"
     rubric: 
       - "The output should contain greeting in english"
+      - "The output should not contain any additional information beyond the greeting"
