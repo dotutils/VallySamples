@@ -1,0 +1,14 @@
+name: gibberish-skill-token-comparison
+evals:
+  - ./eval-token-efficiency.yaml
+vary:
+  - /environment/skills
+baseline: plain-copilot
+variants:
+  plain-copilot:
+    environment:
+      skills: []
+  with-gibberish-skill:
+    environment:
+      skills:
+        - ./gibberish

@@ -1,0 +1,58 @@
+name: gibberish-token-efficiency
+description: Compares plain Copilot with skill-enabled Copilot for correct, token-efficient Gibberish translation.
+version: "1.0"
+type: capability
+
+defaults:
+  runs: 3
+  timeout: 2m
+  executor: copilot-sdk
+  judge_model: claude-sonnet-5
+
+stimuli:
+  - name: translate-copilot
+    prompt: "Translate 'copilot translates quickly' from English to Gibberish. Return only the translation."
+    rubric:
+      - "The output is exactly: cidigopidigilidigot tridiganslidigatidiges qidiguidigickly"
+      - "A correct output always ranks above an incorrect output, regardless of token usage."
+      - "When both outputs are correct, the run with fewer total tokens is better."
+      - "Explanations, speculation, or clarification questions are not useful."
+    graders:
+      - type: output-matches
+        config:
+          pattern: "^cidigopidigilidigot tridiganslidigatidiges qidiguidigickly\\s*$"
+      - type: token-budget
+        config:
+          max: 50000
+      - type: prompt
+        config:
+          prompt: "Evaluate exact translation first, then token efficiency using the execution metrics. Penalize unnecessary deliberation."
+          scoring: scale_1_5
+          threshold: 0.8
+
+  - name: translate-agent-skills
+    prompt: "Translate 'agent skills save tokens' from English to Gibberish. Return only the translation."
+    rubric:
+      - "The output is exactly: idigagidigent skidigills sidigavidige tidigokidigens"
+      - "A correct output always ranks above an incorrect output, regardless of token usage."
+      - "When both outputs are correct, the run with fewer total tokens is better."
+      - "Explanations, speculation, or clarification questions are not useful."
+    graders:
+      - type: output-matches
+        config:
+          pattern: "^idigagidigent skidigills sidigavidige tidigokidigens\\s*$"
+      - type: token-budget
+        config:
+          max: 50000
+      - type: prompt
+        config:
+          prompt: "Evaluate exact translation first, then token efficiency using the execution metrics. Penalize unnecessary deliberation."
+          scoring: scale_1_5
+          threshold: 0.8
+
+scoring:
+  weights:
+    output-matches: 0.5
+    token-budget: 0.2
+    prompt: 0.3
+  threshold: 0.8

@@ -1,0 +1,31 @@
+name: gibberish-skill-activation
+description: Verifies that Copilot activates the Gibberish skill and translates correctly.
+version: "1.0"
+type: capability
+
+agent_environment:
+  skills:
+    - ./gibberish
+
+defaults:
+  runs: 1
+  timeout: 2m
+  executor: copilot-sdk
+
+stimuli:
+  - name: translate-hello-world
+    prompt: "Translate 'hello world' from English to Gibberish. Return only the translation."
+    graders:
+      - type: skill-invocation
+        config:
+          required:
+            - gibberish
+      - type: output-matches
+        config:
+          pattern: "^hidigellidigo widigorld\\s*$"
+
+scoring:
+  weights:
+    skill-invocation: 0.5
+    output-matches: 0.5
+  threshold: 1.0
